@@ -1,0 +1,5 @@
+PS1='\u@\h:\$ '
+source myenv/bin/activate
+
+docker build -t flask-app .
+docker run -p 5000:5000 --name flask-app-cont flask-app
