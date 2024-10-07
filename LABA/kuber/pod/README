@@ -1,46 +1,34 @@
 # Pod
 
 ## ALIAS
-```bash
+
 alias k='kubectl'
-```
 
 ## Создаем Pod
 
 Для этого выполним команду:
 
-```bash
 kubectl apply -f pod.yaml
-```
 
 Проверим результат:
 
-```bash
 kubectl get pod
-```
 
 Посмотрим описание, для чего выполним команду:
 
-```bash
 kubectl describe pod my-pod
-```
 
 ## Перенаправим порт 80 из контейнера на 8080 локального
 
-```bash
 kubectl port-forward pod/my-pod 8080:80
-```
 
 ## проверим работу Nginx
 
-```bash
 curl http://localhost:8080
-```
 
 ## Чистим за собой кластер
 
 Для этого выполним команду:
 
-```bash
 kubectl delete pod --all
-```
+
