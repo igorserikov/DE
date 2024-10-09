@@ -31,7 +31,7 @@ WITH RECURSIVE category_hierarchy AS (
     UNION ALL
 
     SELECT c.id, c.name, c.parent_id, 
-           ch.path  ' > '  c.name  -- Формируем путь
+           ch.path ||  ' > ' ||  c.name  -- Формируем путь
     FROM categories c
     JOIN category_hierarchy ch ON c.id = ch.parent_id
 )
