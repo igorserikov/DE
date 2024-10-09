@@ -38,22 +38,6 @@ WITH RECURSIVE category_hierarchy AS (
 SELECT *
 FROM category_hierarchy;
 -----------------------
-все подкатегории для "Electronics":
-
-WITH RECURSIVE category_hierarchy AS (
-    SELECT id, name, parent_id
-    FROM categories
-    WHERE id = 1  -- "Electronics"
-
-    UNION ALL
-
-    SELECT c.id, c.name, c.parent_id
-    FROM categories c
-    JOIN category_hierarchy ch ON c.parent_id = ch.id
-)
-SELECT *
-FROM category_hierarchy;
-====================
 Разбор случая - от подкатегории к высшей категории
 1)  от подкатегории до корневой категории:
 WHERE id = 3  -- Начинаем с категории "Laptops"
@@ -74,3 +58,20 @@ SELECT c.id, c.name, c.parent_id,
 Первый джоин
 ON c.id = ch.parent_id
 ON c.id(2) = ch.parent_id(2)    <-- добавим id=2 = Computers
+====================================
+все подкатегории для "Electronics":
+
+WITH RECURSIVE category_hierarchy AS (
+    SELECT id, name, parent_id
+    FROM categories
+    WHERE id = 1  -- "Electronics"
+
+    UNION ALL
+
+    SELECT c.id, c.name, c.parent_id
+    FROM categories c
+    JOIN category_hierarchy ch ON c.parent_id = ch.id
+)
+SELECT *
+FROM category_hierarchy;
+====================
