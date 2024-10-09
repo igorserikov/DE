@@ -1,0 +1,76 @@
+РЕКУРСИЯ
+===========
+https://sqliteonline.com/
+
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    parent_id INTEGER,  -- Указывает на родительскую категорию
+    FOREIGN KEY (parent_id) REFERENCES categories (id)
+);
+
+INSERT INTO categories (name, parent_id) VALUES
+('Electronics', NULL),
+('Computers', 1),
+('Laptops', 2),
+('Desktops', 2),
+('Smartphones', 1),
+('Cameras', 1),
+('DSLR', 6),
+('Mirrorless', 6);
+
+-------------------
+3. Рекурсивный запрос для получения пути от подкатегории до корневой категории:
+Допустим, мы хотим получить полный путь для подкатегории "Laptops" (id = 3).
+
+WITH RECURSIVE category_hierarchy AS (
+    SELECT id, name, parent_id, name AS path  -- Начинаем с подкатегории
+    FROM categories
+    WHERE id = 3  -- Начинаем с категории "Laptops"
+
+    UNION ALL
+
+    SELECT c.id, c.name, c.parent_id, 
+           ch.path  ' > '  c.name  -- Формируем путь
+    FROM categories c
+    JOIN category_hierarchy ch ON c.id = ch.parent_id
+)
+SELECT *
+FROM category_hierarchy;
+-----------------------
+все подкатегории для "Electronics":
+
+WITH RECURSIVE category_hierarchy AS (
+    SELECT id, name, parent_id
+    FROM categories
+    WHERE id = 1  -- "Electronics"
+
+    UNION ALL
+
+    SELECT c.id, c.name, c.parent_id
+    FROM categories c
+    JOIN category_hierarchy ch ON c.parent_id = ch.id
+)
+SELECT *
+FROM category_hierarchy;
+====================
+Разбор случая - от подкатегории к высшей категории
+1)  от подкатегории до корневой категории:
+WHERE id = 3  -- Начинаем с категории "Laptops"
+
+В category_hierarchy (ch), базе рекурсии, у нас будет:
+----------------------------------
+id       name          parent_id   path
+"3"	"Laptops"	"2"        Laptops
+-----------------------------------
+И из FROM categories(c) мы джоиним "верхние" категории,
+на ch.parent_id==2 нам нужно добавить c.id==2:
+
+SELECT c.id, c.name, c.parent_id, 
+           ch.path  ' > '  c.name  -- Формируем путь
+    FROM categories c
+    JOIN category_hierarchy ch ON c.id = ch.parent_id
+
+Первый джоин
+ON c.id = ch.parent_id
+ON c.id(2) = ch.parent_id(2)    <-- добавим id=2 = Computers
