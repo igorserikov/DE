@@ -1,0 +1,31 @@
+Установка
+
+1. Если мы устанавливаем на удаленной машине и хотим туда подключаться, то:
+Надо поправить yaml-файл, в KAFKA_ADVERTISED_LISTENERS, изменить пункт
+PLAINTEXT_HOST - указать публичный IP <YOUR_VM_PUBLIC_IP>:
+
+KAFKA_ADVERTISED_LISTENERS: ... PLAINTEXT_HOST://<YOUR_VM_PUBLIC_IP>:9092
+
+2. И далее находясь в этой директории:
+docker-compose up -d
+
+3. ОТкрыть порты:
+sudo ufw allow 9092/tcp
+
+4. Проверьте сетевую доступность: с клиентской машины используйте 
+telnet <ваш-внешний-IP> 9092
+nmap -p 9092 <ваш-внешний-IP>
+, чтобы проверить, доступен ли порт Kafka.
+
+5. Создадим топик, для этого скачаем утилиты кафки:
+wget https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz
+tar -xzf kafka_2.13-3.8.0.tgz
+cd kafka_2.13-3.8.0/bin/
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic test-topic
+Created topic test-topic.
+
+6. Запишем сообщения
+./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic test-topic
+
+7. Удобная утилитка kcat, читаем из топика:
+kcat -b localhost:9092 -t test-topic
