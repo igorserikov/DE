@@ -29,3 +29,6 @@ Created topic test-topic.
 
 7. Удобная утилитка kcat, читаем из топика:
 kcat -b localhost:9092 -t test-topic
+
+8. Еще удобная GUI  утилита OffsetExplorer
+https://www.kafkatool.com/
