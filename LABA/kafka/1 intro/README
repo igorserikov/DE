@@ -1,0 +1,28 @@
+1. ПРоверить что докеры лежат в одной сети
+docker network ls
+docker network inspect my_custom_network
+
+docker exec -it postgr psql -U debezium -d mydb
+
+Postgres server wal_level property must be "logical"
+
+2. Надо добавить настройку для POstgres:
+docker exec -it postgr bash
+wal_level = logical
+SHOW config_file;
+/var/lib/postgresql/data/postgresql.conf
+docker restart postgr
+
+
+3. Создаем таблички
+
+CREATE TABLE my_table (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+4. Смотрим CDC лог
+kcat -b localhost:9092 -t source.public.my_table
+
+5. 
+docker exec -it ksqldb ksql http://localhost:8088

@@ -21,14 +21,14 @@ nmap -p 9092 <ваш-внешний-IP>
 wget https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz
 tar -xzf kafka_2.13-3.8.0.tgz
 cd kafka_2.13-3.8.0/bin/
-./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic test-topic
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic  my-topic
 Created topic test-topic.
 
 6. Запишем сообщения
-./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic test-topic
+./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic  my-topic
 
 7. Удобная утилитка kcat, читаем из топика:
-kcat -b localhost:9092 -t test-topic
+kcat -b localhost:9092 -t  my-topic
 
 8. Еще удобная GUI  утилита OffsetExplorer
 https://www.kafkatool.com/
