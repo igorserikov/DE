@@ -60,6 +60,8 @@ services:
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+    volumes:
+      - debez_data:/tmp/tmp
 
   postgr:
     image: postgres:14
@@ -89,3 +91,4 @@ services:
     
 volumes:
   postgres_data:
+  debez_data:

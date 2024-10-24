@@ -49,6 +49,13 @@ except Exception as e:
 schema_registry_conf = {'url': "http://localhost:8081/"}
 schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
+##
+# AvroSerializer автоматически регистрирует схему в Confluent Schema Registry
+#  При первом использовании схемы, она отправляется в Schema Registry, 
+# где ей присваивается уникальный идентификатор (ID). 
+# Этот идентификатор затем ассоциируется с данными, отправленными в Kafka, 
+# вместо того чтобы каждый раз отправлять всю схему. 
+# Это оптимизирует передачу данных и гарантирует согласованность схем.
 avro_serializer = AvroSerializer(schema_registry_client,
                                     schema_str,
                                     user_to_dict)
@@ -60,18 +67,23 @@ producer_conf = {'bootstrap.servers': 'localhost:9092'}
 producer = Producer(producer_conf)
 
 print("Producing user records to topic {}. ^C to exit.".format(topic))
-while True:
+for _ in range(4):
     # Serve on_delivery callbacks from previous calls to produce()
     producer.poll(0.0)
     try:
-        user_name = "qwe"#input("Enter name: ")
-        user_address = "add1"#input("Enter address: ")
-        user_favorite_number = 1#int(input("Enter favorite number: "))
-        user_favorite_color = "red"#input("Enter favorite color: ")
+        user_name = "qwe"
+        user_address = "add1"
+        user_favorite_number = 1 
+        user_favorite_color = "red "
         user = User(name=user_name,
                     address=user_address,
                     favorite_color=user_favorite_color,
                     favorite_number=user_favorite_number)
+        ##################
+        # SerializationContext — это объект, который может быть передан в функции сериализации,
+        #  такие как AvroSerializer. Он содержит дополнительную информацию о контексте 
+        # сериализации, такую как топик Kafka, в который отправляются данные, 
+        # и другие параметры, полезные при сериализации.
         producer.produce(topic=topic,
                             key=string_serializer(str(uuid4())),
                             value=avro_serializer(user, SerializationContext(topic, MessageField.VALUE)),
