@@ -1,0 +1,6 @@
+1. Докеры
+
+docker exec -it postgr psql -U debezium -d mydb
+docker exec -it ksqldb ksql http://localhost:8088
+
+2. 

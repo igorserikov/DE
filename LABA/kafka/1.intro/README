@@ -1,3 +1,20 @@
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic  my-topic
+
+./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic  my-topic
+
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my-topic --from-beginning
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic orders
+
+./kafka-topics.sh --create --topic orders --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
+
+kcat -b localhost:9092 -t  my-topic
+
+
+
 1. ПРоверить что докеры лежат в одной сети
 docker network ls
 docker network inspect my_custom_network

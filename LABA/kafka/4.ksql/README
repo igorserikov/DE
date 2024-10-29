@@ -1,0 +1,67 @@
+docker exec -it ksqldb ksql http://localhost:8088
+
+1.
+CREATE STREAM my_stream (
+  id INT,
+  name STRING,
+  amount DOUBLE
+) WITH (
+  KAFKA_TOPIC='my_topic',
+  VALUE_FORMAT='JSON'
+);
+
+INSERT INTO my_stream (id, name, amount) VALUES (1, 'Alice', 100.50);
+select * from my_stream;
+
+2. Различные команды
+SHOW STREAMS;
+SHOW TOPICS;	Показать список всех Kafka-топиков.
+
+3. Создаем трансформацию
+CREATE STREAM transformed_stream AS
+SELECT id, UCASE(name) AS upper_name, amount+1000
+FROM my_stream;
+========================
+Таблица
+
+1. Топик
+./kafka-topics.sh --create --topic orders --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+
+2. Stream
+CREATE STREAM orders_stream (
+  order_id INT,
+  user_id INT,
+  item STRING,
+  quantity INT,
+  price DOUBLE
+) WITH (
+  KAFKA_TOPIC='orders',
+  VALUE_FORMAT='JSON'
+);
+
+3. Table
+CREATE TABLE user_orders AS
+  SELECT user_id,
+         SUM(quantity) AS total_quantity,
+         COUNT(*) AS order_count
+  FROM orders_stream
+  GROUP BY user_id;
+
+4. Check
+SELECT * FROM user_orders EMIT CHANGES;
+
+нужно выводить (или эмитировать) изменения по мере их появления. Это означает, что команда будет не просто выполнять одноразовый запрос, а будет постоянно слушать поток данных и выводить результаты в реальном времени.
+
+5. INSERT
+INSERT INTO orders_stream (order_id, user_id, item, quantity, price) 
+VALUES (1, 123, 'Laptop', 2, 1000.00);
+
+INSERT INTO orders_stream (order_id, user_id, item, quantity, price) 
+VALUES (2, 123, 'Phone', 1, 500.00);
+
+INSERT INTO orders_stream (order_id, user_id, item, quantity, price) 
+VALUES (3, 456, 'Tablet', 1, 300.00);
+
+
+
+
