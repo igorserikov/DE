@@ -32,19 +32,27 @@ def dict_to_user(obj, ctx):
 topic = "my-avro-topic"
 schema = "user.avsc"
 
-try:
-    path = os.path.realpath(os.path.dirname(__file__))
-    print(f"{path}/{schema}")
-    with open(f"{path}/{schema}") as f:
-        schema_str = f.read()
-except FileNotFoundError:
-    print(f"Файл '{schema}' не найден.")
-except Exception as e:
-    print(f"Произошла ошибка: {e}")
-
+### -------------------------------------------------
+## Можно прочитать схему из файла
+# try:
+#     path = os.path.realpath(os.path.dirname(__file__))
+#     print(f"{path}/{schema}")
+#     with open(f"{path}/{schema}") as f:
+#         schema_str = f.read()
+# except FileNotFoundError:
+#     print(f"Файл '{schema}' не найден.")
+# except Exception as e:
+#     print(f"Произошла ошибка: {e}")
+##--------------------------------------------------
 sr_conf = {'url': "http://localhost:8081/"}
 schema_registry_client = SchemaRegistryClient(sr_conf)
 
+##-----------------------------------------
+## НО! Получим схему из Schema Registry по имени топика!
+# Получаем последнюю версию схемы для топика
+schema = schema_registry_client.get_latest_version(f"{topic}-value")
+schema_str = schema.schema.schema_str  # Получаем строковое представление схемы
+##-------------------------------------------
 avro_deserializer = AvroDeserializer(schema_registry_client,
                                         schema_str,
                                         dict_to_user)

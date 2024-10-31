@@ -34,7 +34,7 @@ def delivery_report(err, msg):
         msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 ##----------------------------------------
-
+##  ЧИТАЕМ СХЕМУ ИЗ ФАЙЛА
 try:
     path = os.path.realpath(os.path.dirname(__file__))
     print(f"{path}/{schema}")

@@ -8,7 +8,7 @@ class Order(faust.Record, serializer='json'):
     status: Optional[str] = None  # Опциональный параметр, по умолчанию None
 
 # Топик для входящих заказов
-orders_topic = app.topic('orders', value_type=Order)
+orders_topic = app.topic('orders_faust', value_type=Order)
 
 # Создаем канал для передачи сообщений между агентами
 channel = app.channel(value_type=Order)

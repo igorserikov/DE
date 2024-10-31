@@ -8,7 +8,7 @@ class Order(faust.Record, serializer='json'):
     status: Optional[str] = None  # Опциональный параметр, по умолчанию None
 
 # Топик для входящих заказов
-orders_topic = app.topic('orders', value_type=Order)
+orders_topic = app.topic('orders_faust', value_type=Order)
 
 # Таблица для хранения количества заказов на каждый account_id
 order_counts = app.Table('order_counts', key_type= str,value_type=int,

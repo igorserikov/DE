@@ -16,6 +16,7 @@ select * from my_stream;
 2. Различные команды
 SHOW STREAMS;
 SHOW TOPICS;	Показать список всех Kafka-топиков.
+PRINT 'my_topic' FROM BEGINNING;
 
 3. Создаем трансформацию
 CREATE STREAM transformed_stream AS

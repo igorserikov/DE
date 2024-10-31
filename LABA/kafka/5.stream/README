@@ -2,9 +2,11 @@ https://github.com/faust-streaming/faust
 
 pip install faust-streaming
 
+./kafka-topics.sh --create --topic orders_faust --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+
 Запуск 
 faust -A f_aust worker -l info
-./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic orders
+./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic orders_faust
 {"account_id":1}
 ===================
 faust -A channel worker -l info
