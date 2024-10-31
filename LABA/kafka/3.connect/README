@@ -1,4 +1,8 @@
+CONNECT
+=======================
 docker exec -it debezium bash
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
 ------
 1. Для файлового коннектора
 docker volume ls
