@@ -1,0 +1,6 @@
+DAG dependencies
+https://youtu.be/MvjTQNMRhhY?si=iwo29pAvq3XxxHgP
+-------------------
+Контейнер шедулерабудет вылетать если не сделать
+mkdir -p ./logs/scheduler
+chmod -R 777 ./logs

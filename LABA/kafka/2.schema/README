@@ -4,3 +4,4 @@ docker exec -it postgr psql -U debezium -d mydb
 docker exec -it ksqldb ksql http://localhost:8088
 
 2. 
+kcat -b localhost:9092 -t my-avro-topic
